@@ -49,7 +49,7 @@ class EPub:
 		
 	def add_chapter(self, ch_name, ch_text):
 		filename = "a%s-%s.html" % (len(self.chapters)+1, str_to_filename(ch_name))
-		with open(self.join_text(filename), "w") as ch_file:
+		with open(self.join_text(filename), "w", encoding="utf-8") as ch_file:
 			ch_file.write(ch_text)
 		self.chapters.append((filename, ch_name))
 	

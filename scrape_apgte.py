@@ -70,4 +70,7 @@ class APGtE_Scraper(Scraper):
 
 
 if __name__ == "__main__":
-	APGtE_Scraper().scrape(*sys.argv[1:])
+	pass
+	# APGtE_Scraper().scrape(*sys.argv[1:])
+
+

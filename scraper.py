@@ -1,3 +1,5 @@
+import unicodedata
+
 from lxml.etree import tostring
 
 from ebook import EPub, s_words
@@ -7,7 +9,7 @@ class Scraper:
 	def __init__(self):
 		# Instance variables that PyCharm will complain about if I don't define them here.
 		self.title = ""
-		self.author = ""
+		self.author = "pirateaba"
 		self.books = []
 	
 	def scrape(self, *particular_books):
@@ -52,7 +54,12 @@ class Scraper:
 			html_tag.insert(1, body_tag)
 			body_tag.insert(0, chap["content"])
 			
+			# # Ensure Unicode compatibility and replace problematic characters
+			# chapter_content = tostring(html_tag, encoding="unicode", pretty_print=True)
+			# chapter_content = self.clean_text(chapter_content)
+
 			ebook.add_chapter(chap["name"], tostring(html_tag, encoding="unicode"))
+
 			# Minimise memory use by deleting the content now that it's saved elsewhere.
 			del chap["content"]
 			
@@ -62,6 +69,23 @@ class Scraper:
 		ebook.output_file(book["file"])
 		print("Finished assembling book: {} ({}k words)".format(book["file"], s_words(book_words)))
 	
+	# @staticmethod
+	# def clean_text(text):
+	# 	"""
+	# 	Normalize and clean text by removing problematic Unicode characters.
+	# 	"""
+	# 	# Normalize text to decompose combined characters
+	# 	text = unicodedata.normalize("NFKD", text)
+		
+	# 	# Encode to ASCII, ignoring errors, then decode back to string
+	# 	text = text.encode("ascii", "ignore").decode("ascii")
+		
+	# 	# Optionally, replace any remaining non-ASCII characters
+	# 	text = "".join(char if char.isprintable() else " " for char in text)
+		
+	# 	return text
+
+
 	def get_toc(self):
 		"""
 		Get an iterable of dicts (books) containing iterables of dicts (chapters).
